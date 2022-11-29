@@ -1,6 +1,6 @@
 # qingcheng
 
--有问题qq群问我：605695408  或者点击进群  <u><p><b style=color:red><a href=https://qm.qq.com/cgi-bin/qm/qr?k=EtDGIyPK7pn2o3uc69xvsglMFWt1cZ9T&authKey=YGhdJ6sPVUe8LxN930vg7jAheRPn%2Bli8or1gjYmR8xJ9wlvO%2F%2F6v38AfoBNRdLOR&noverify=0&group_code=605695408>或者点我直接进QQ群</a></p></u>
+-有问题qq群问我：605695408  或者点击进群  https://qm.qq.com/cgi-bin/qm/qr?k=EtDGIyPK7pn2o3uc69xvsglMFWt1cZ9T&authKey=YGhdJ6sPVUe8LxN930vg7jAheRPn%2Bli8or1gjYmR8xJ9wlvO%2F%2F6v38AfoBNRdLOR&noverify=0&group_code=605695408
 - 随缘维护和上传, 请不要上传或者转载到其它地方。
 - 本仓库脚本仅供用于学习及参考对应web/app的参数解密并提供对应demo用于测试,请不要询问如何多账号等
 - 食用方法都在脚本内,请自行查看。
