@@ -9,7 +9,7 @@
 """
 1. 脚本仅供学习交流使用, 请在下载后24h内删除
 2. 环境变量说明:
-    export TELECOM_LOTTERY = 手机号1&密码1换行手机号2&密码2
+    export TELECOM_LOTTERY = 手机号1@密码1换行手机号2@密码2
 3. 必须登录过 电信营业厅 app的账号才能正常运行
 """
 from re import findall
@@ -22,7 +22,7 @@ from datetime import datetime, timedelta
 from asyncio import wait, sleep, run
 
 import time
-import json
+import threading
 
 from tools.tool import timestamp, get_environ, print_now
 from tools.send_msg import push
@@ -131,7 +131,7 @@ class TelecomLotter:
             if active_code1 is not None or active_code2 is not None:
                 break
             print(f"此直播间暂无抽奖活动, 等待2秒后再次查询 剩余查询次数{7 - i}")
-            await sleep(2)
+            await sleep(10)
             continue
         if active_code1 is None and active_code2 is None:
             print("查询结束 本直播间暂无抽奖活动")
@@ -174,49 +174,44 @@ class TelecomLotter:
         else:
             print(f"获取奖品信息失败, 接口返回" + str(data))
 
-
-def get_data():
-    print('正在加载今日数据ing...')    
-    all_list = []
-    code = 1
-    for i in range(35):
-        if code < 10:
-            code_str = '0' + str(code)
+all_list = []
+def get_urls():
+    urls = []
+    for i in range(1, 36):
+        if i < 10:
+            code_str = '0' + str(i)
         else:
-            code_str = str(code)
+            code_str = str(i)
         url = f'https://xbk.189.cn/xbkapi/lteration/index/recommend/anchorRecommend?provinceCode={code_str}'
-        random_phone = f"1537266{randint(1000, 9999)}"
-        headers = {
-            "referer": "https://xbk.189.cn/xbk/newHome?version=9.4.0&yjz=no&l=card&longitude=%24longitude%24&latitude=%24latitude%24&utm_ch=hg_app&utm_sch=hg_sh_shdbcdl&utm_as=xbk_tj&loginType=1",
-            "user-agent": f"CtClient;9.6.1;Android;12;SM-G9860;{b64encode(random_phone[5:11].encode()).decode().strip('=+')}!#!{b64encode(random_phone[0:5].encode()).decode().strip('=+')}"
-        }
-        # print(url)
-        data = get(url, headers=headers).json()
-        body = data["data"]
-        for i in body:
-            if time.strftime('%Y-%m-%d') in i['start_time']:
-                if i not in all_list:              
-                    print(i['start_time']+' 直播间名称：'+i['nickname'] ) 
-                    all_list.append(i)
-        code += 1
-    list = {}
-    f = 1
-    for i in all_list:
-        list['liveRoom' + str(f)] = i
-        f += 1
-    print('数据加载完毕')
-    return list
+        urls.append(url)
+    return urls
+def get_data(url):
+    random_phone = f"1537266{randint(1000, 9999)}"
+    headers = {
+        "referer": "https://xbk.189.cn/xbk/newHome?version=9.4.0&yjz=no&l=card&longitude=%24longitude%24&latitude=%24latitude%24&utm_ch=hg_app&utm_sch=hg_sh_shdbcdl&utm_as=xbk_tj&loginType=1",
+        "user-agent": f"CtClient;9.6.1;Android;12;SM-G9860;{b64encode(random_phone[5:11].encode()).decode().strip('=+')}!#!{b64encode(random_phone[0:5].encode()).decode().strip('=+')}"
+    }
+    # print(url)
+    data = get(url, headers=headers).json()
+    body = data["data"]
+    for i in body:
+        if time.strftime('%Y-%m-%d') in i['start_time']:
+            if i not in all_list:
+                name = i['nickname']
+                start_time = i['start_time'].replace(time.strftime('%Y-%m-%d'), '')
+                print(f' {start_time} 房间：{name}')
+                all_list.append(i)
 
 
 
 def main(phone, password):
     apiType = 1
     try:
-        url = "https://gitcode.net/weixin_52142858/telecomliveinfo/-/raw/master/telecomLiveInfo.json"
+        url = "https://raw.githubusercontent.com/limoruirui/Hello-World/main/telecomLiveInfo.json"
         data = get(url, timeout=5).json()        
     except:
-        data = getData
-    print(data)
+        data = list_d
+    # print(data)
     liveListInfo = {}
     allLiveInfo = data.values() if apiType == 1 else data["data"]
     for liveInfo in allLiveInfo:
@@ -234,7 +229,27 @@ def main(phone, password):
         TelecomLotter(phone, password).find_price()
 
 if __name__ == '__main__':
-    getData=get_data()
+    urls = get_urls()
+    print('加载今日数据ing...')
+    threads = []
+    for url in urls:
+        threads.append(
+            threading.Thread(target=get_data, args=(url,))
+        )
+
+    for thread in threads:
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    list_d = {}
+    f = 1
+    for i in all_list:
+        list_d['liveRoom' + str(f)] = i
+        f += 1
+    print('数据加载完毕')
+    
     param = get_environ("TELECOM_LOTTERY")
     if param == "" :
         print("未填写相应变量 退出")
