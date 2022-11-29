@@ -4,45 +4,15 @@
 - 食用方法都在脚本内,请自行查看。
 - 觉得好用可以点个star。
 ## 使用方法
-### 一. ubuntu服务器
-- 拉取整个仓库(部分文件可以单独跑)
-  ```
-  // 以下几条命令 请不要带着 $/# 一起复制 这两个符号只是代表了所需权限
-  $ git clone https://github.com/limoruirui/misaka
-- 安装依赖
-  ```
-  $ pip3 install -r requirements.txt
-- 然后设置环境变量 以ubuntu为例 只提供参考
-  ```
-  $ sudo vim /etc/profile
-  写入 export key="value" 多个环境变量就写入多行
-- 执行脚本
-  ```
-  1.手动执行测试 在主目录下 执行
-    $ python3 xxx.py >> logs/xxx.log
-  2. crontab定时任务
-    0 0 * * * . /etc/profile;cd 目录的绝对路径 && python3 xxx.py >> logs/xxx.log 2>&1
-### 二. 青龙面板
+
+### . 青龙面板
 - 拉取仓库
   ```
-  ql repo https://github.com/limoruirui/misaka.git "" "backUp|tools|JS|logs|login"  "tools|JS|logs|login"
-  国内服务器太卡的话用下面这个
-  ql repo https://github.ruirui.fun/https://github.com/limoruirui/misaka.git "" "backUp|tools|JS|logs|login"  "tools|JS|logs|login"
-- 安装依赖
-  ```
-  安装依赖时失败时 如果日志内有提示 gcc not found 的关键字 则进入docker容器中 依次执行
-  $ apk update
-  $ apk add build-base 
-  此时在docker容器内执行 gcc --version 若正确显示版本信息 则可继续安装
-  
-  第一种方法: 在github复制requirements.txt内的所有东西 
-  打开面板-依赖管理-新建依赖 依赖类型选 python3 自动拆分选 是 把复制的东西粘贴在名称内 确定即可
-  
-  第二种方法: 进入容器中 依次执行
-  $ cd data/scripts/limoruirui_misaka
-  $ wget https://raw.githubusercontent.com/limoruirui/misaka/master/requirements.txt
-  $ pip3 install -r requirements.txt
-- 按照脚本文件内的说明设置环境变量
+
+ ql repo https://github.ruirui.fun/https://github.com/WWJqingcheng/dx.git "" "backUp|tools|JS|logs|login"  "tools|JS|logs|login"
+
+
+
 ## 环境变量说明 
 - 一.推送
   - 1.tgbot 
