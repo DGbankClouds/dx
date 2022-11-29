@@ -212,7 +212,7 @@ def get_data():
 def main(phone, password):
     apiType = 1
     try:
-        url = "https://raw.githubusercontent.com/limoruirui/Hello-World/main/telecomLiveInfo.json"
+        url = "https://gitcode.net/woshitezhonglang/telecomliveinfo/-/raw/master/telecomLiveInfo.json"
         data = get(url, timeout=5).json()        
     except:
         data = getData
