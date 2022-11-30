@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -- coding: utf-8 --
 # -------------------------------
-# @Author : github@limoruirui https://github.com/limoruirui
-# @Time : 2022/11/11 10:42
+
+# @Time : 2022/11/30 13.11
 # cron "*/30 8-20 * * *" script-path=xxx.py,tag=匹配cron用
 # const $ = new Env('某营业厅直播抽奖');
 # -------------------------------
