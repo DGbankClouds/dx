@@ -7,6 +7,8 @@
 - 觉得好用可以点个star。
 ## 使用方法
 
+只讨论电信直播脚本问题，别的问题自行解决哈
+
 缺失tools模块就下载上面的tools文件夹放到/root/ql/scripts/WWJqingcheng_dx这个目录下
 
 缺失tool模块直接在python依赖里面安装tool
