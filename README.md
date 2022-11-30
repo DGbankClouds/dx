@@ -15,6 +15,11 @@
 
 缺失pycryptodome的！！！！！先在装liunx装build-base依赖再去python装pycryptodome
 
+出现只查询，查询完就结束的，请查看自己的环境变量设置对了没有！！！！！！！！TELECOM_LOTTERY=手机号1&密码1换行手机号2&密码2   
+环境变量名称：TELECOM_LOTTERY
+值：手机号1&密码1换行手机号2&密码2换行手机号3&密码3......
+
+
 ### . 青龙面板
 - 拉取仓库
  
