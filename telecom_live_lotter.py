@@ -9,7 +9,7 @@
 """
 1. 脚本仅供学习交流使用, 请在下载后24h内删除
 2. 环境变量说明:
-    export TELECOM_LOTTERY = 手机号1@密码1换行手机号2@密码2
+    export TELECOM_LOTTERY = 手机号1&密码1换行手机号2&密码2
 3. 必须登录过 电信营业厅 app的账号才能正常运行
 """
 from re import findall
