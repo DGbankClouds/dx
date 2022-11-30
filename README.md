@@ -11,7 +11,7 @@
 
 缺失tool模块直接在python依赖里面安装tool
 
-缺失pycrypdemo的！！！！！先在装liunx装build-base依赖再去python装pycrypdemo
+缺失pycryptodome的！！！！！先在装liunx装build-base依赖再去python装pycryptodome
 
 ### . 青龙面板
 - 拉取仓库
