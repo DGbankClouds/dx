@@ -7,9 +7,9 @@
 - 觉得好用可以点个star。
 ## 使用方法
 
-###缺失tools模块就下载上面的tools文件夹放到/root/ql/scripts/WWJqingcheng_dx这个目录下
+缺失tools模块就下载上面的tools文件夹放到/root/ql/scripts/WWJqingcheng_dx这个目录下
 
-###缺失tool模块直接在python依赖里面安装tool
+缺失tool模块直接在python依赖里面安装tool
 
 ### . 青龙面板
 - 拉取仓库
