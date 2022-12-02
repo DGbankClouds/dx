@@ -11,9 +11,11 @@
 1. 电信签到 不需要抓包 脚本仅供学习交流使用, 请在下载后24h内删除
 2. cron说明 12点必须执行一次(用于兑换) 然后12点之外还需要执行一次(用于执行每日任务) 一天共两次 可直接使用默认cron
 2. 环境变量说明:
-    必须  TELECOM_PHONE_C : 电信手机号
-    选填  TELECOM_PASSWORD_C : 电信服务密码 填写后会执行更多任务
-    选填  TELECOM_FOOD  : 给宠物喂食次数 默认为0 不喂食 根据用户在网时长 每天可以喂食5-10次
+    必须  TELECOM_PHONE_C : 电信手机号  多账号：手机号1#手机号2#.....
+    选填  TELECOM_PASSWORD_C : 电信服务密码 填写后会执行更多任务   多账号密码 ：手机号一密码#手机号2密码#......
+    
+    选填  TELECOM_FOOD  : 给宠物喂食次数 默认为8  根据用户在网时长 每天可以喂食5-10次
+    
 3. 必须登录过 电信营业厅 app的账号才能正常运行
 """
 """
@@ -31,6 +33,7 @@ from tools.aes_encrypt import AES_Ctypt
 from tools.rsa_encrypt import RSA_Encrypt
 from tools.tool import timestamp, get_environ, print_now
 from tools.send_msg import push
+import re
 from login.telecom_login import TelecomLogin
 from string import ascii_letters, digits
 
