@@ -207,7 +207,7 @@ def get_data(url):
 def main(phone, password):
     apiType = 1
     try:
-        url = "https://gitcode.net/weixin_52142858/telecomliveinfo/-/raw/master/telecomLiveInfo.json"
+        url = "https://gitee.com/kele2233/genxin/raw/master/telecomLiveInfo.json"
         data = get(url, timeout=5).json()        
     except:
         data = list_d
