@@ -4,22 +4,17 @@
 # @Author : github@limoruirui https://github.com/limoruirui
 # @Time : 2022/9/12 16:10
 # cron "0 9,10,14 * * *" script-path=xxx.py,tag=匹配cron用
-# const $ = new Env('电信签到多账号');
+# const $ = new Env('电信签到');
 # -------------------------------
 
 """
 1. 电信签到 不需要抓包 脚本仅供学习交流使用, 请在下载后24h内删除
-2. cron说明 10点必须执行一次(用于兑换) 然后14点之外还需要执行一次(用于执行每日任务) 一天共两次 可直接使用默认cron    默认每天9点10点14点各执行一次
+2. cron说明 默认10点14点执行一次(用于兑换话费) 
 2. 环境变量说明:
-    必须  TELECOM_PHONE_C : 电信手机号  多账号：手机号1#手机号2#.....
-    选填  TELECOM_PASSWORD_C : 电信服务密码 填写后会执行更多任务   多账号密码 ：手机号一密码#手机号2密码#......
-    主方法与源文件不同；增加了多账号的判断；但是要求“账号”和“密码”的数量必须相等 或者 都没有密码；
-    比如2个账号、2个密码；否则会报错；格式如下
-    TELECOM_PHONE_C       13311111111#13322222222
-    TELECOM_PASSWORD_C    111111#222222
-    
-    选填  TELECOM_FOOD  : 给宠物喂食次数 默认为0  根据用户在网时长 每天可以喂食5-10次
-    
+    必须  TELECOM : 电信手机号@电信服务密码@宠物喂食次数(默认0,最大10)&手机号2@密码2@喂食数2
+    # TELECOM       13311111111@111111@0&13322222222@222222@10
+    并发命令：task WWJqingcheng_dx/china_telecom.py conc TELECOM
+             task 后边是脚本所在目录/china_telecom.py这个后面加上后面的两个词就是并发 conc TELECOM
 3. 必须登录过 电信营业厅 app的账号才能正常运行
 """
 """
@@ -31,15 +26,16 @@ from datetime import date, datetime
 from random import shuffle, randint, choices
 from time import sleep, strftime
 from re import findall
+import re
 from requests import get, post
 from base64 import b64encode
 from tools.aes_encrypt import AES_Ctypt
 from tools.rsa_encrypt import RSA_Encrypt
 from tools.tool import timestamp, get_environ, print_now
 from tools.send_msg import push
-import re
 from login.telecom_login import TelecomLogin
 from string import ascii_letters, digits
+
 
 
 class ChinaTelecom:
@@ -82,14 +78,12 @@ class ChinaTelecom:
                 split_text = text[(32 * i):(32 * (i + 1))]
                 encrypt_text += RSA_Encrypt(self.key).encrypt(split_text)
             return encrypt_text
-
     @staticmethod
     def geneRandomToken():
         randomList = choices(ascii_letters + digits, k=129)
         token = f"V1.0{''.join(x for x in randomList)}"
         return token
     # 签到
-
     def chech_in(self):
         url = "https://wapside.189.cn:9001/jt-sign/api/home/sign"
         data = {
@@ -208,7 +202,7 @@ class ChinaTelecom:
             print_now(data)
             if data["code"] == "0":
                 break
-            sleep(6)
+            sleep(3)
         reward_status = self.get_coin_info()
         if reward_status:
             self.msg += f"账号{self.phone}连续签到7天兑换1元话费成功\n"
@@ -219,8 +213,8 @@ class ChinaTelecom:
             print_now(self.msg)
             push("电信签到兑换", self.msg)
 
-    # 查询金豆数量
 
+    # 查询金豆数量
     def coin_info(self):
         url = "https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo"
         data = {
@@ -242,7 +236,6 @@ class ChinaTelecom:
         data = post(url, headers=self.headers_live, json=data).json()
         self.authorization = f"Bearer {data['data']['token']}"
         self.headers_live["Authorization"] = self.authorization
-
     def get_usercode(self):
         """
         授权星播客登录获取 usercode
@@ -258,7 +251,6 @@ class ChinaTelecom:
         location = get(url, headers=self.headers_live, allow_redirects=False).headers["location"]
         usercode = findall(r"usercode=(.*?)&", location)[0]
         self.usercode = usercode
-
     def watch_video(self):
         """
         看视频 一天可完成6次
@@ -273,7 +265,6 @@ class ChinaTelecom:
             print("看小视频15s完成一次")
         else:
             print(f"完成看小视频15s任务失败, 失败原因为{data['msg']}")
-
     def like(self):
         """
         点赞直播间 可完成5次
@@ -296,7 +287,6 @@ class ChinaTelecom:
                     print(f"完成点赞直播间任务失败,原因是{data['msg']}")
             except Exception:
                 print(Exception)
-
     def watch_live(self):
         # 首先初始化任务,等待15秒倒计时后再完成 可完成10次
         url = "https://xbk.189.cn/xbkapi/lteration/liveTask/index/watchLiveInit"
@@ -331,7 +321,6 @@ class ChinaTelecom:
         }
         userid = post(url, json=body).json()["data"]["userInfo"]["userThirdId"]
         return userid
-
     def share(self):
         """
         50的分享任务 token不做校检 有值即可 若登录成功了 使用自己的token 否则生成随机的token
@@ -365,7 +354,6 @@ class ChinaTelecom:
         }
         data = post(url, headers=headers, json=body).json()
         print_now(data)
-
     def main(self):
         self.init()
         self.chech_in()
@@ -392,7 +380,6 @@ class ChinaTelecom:
         self.coin_info()
         self.msg += f"你账号{self.phone} 当前有金豆{self.coin_count['totalCoin']}"
         push("电信app签到", self.msg)
-
     def get_coin_info(self):
         url = "https://wapside.189.cn:9001/jt-sign/api/getCoinInfo"
         decrept_para = f'{{"phone":"{self.phone}","pageNo":0,"pageSize":10,type:"1"}}'
@@ -404,39 +391,26 @@ class ChinaTelecom:
             return True
         return False
 
-
-# 主方法与源文件不同；增加了多账号的判断；但是要求“账号”和“密码”的数量必须相等 或者 都没有密码；
-# 比如2个账号、2个密码；否则会报错；格式如下
-# TELECOM_PHONE_C       13311111111#13322222222
-# TELECOM_PASSWORD_C    111111#222222
+# 主方法与源文件不同；增加了多账号的判断；变量格式如下
+# TELECOM       13311111111@111111@10&13322222222@222222@10
 if __name__ == "__main__":
-    phones = get_environ("TELECOM_PHONE_C")
-    passwords = get_environ("TELECOM_PASSWORD_C")
-    r = re.compile(r"1[34789]\d{9}", re.S)
-    users = r.findall(phones)
-    r = re.compile(r"\d{6}", re.S)
-    pwds = r.findall(passwords)
-    print(users)
-    foods = int(float(get_environ("TELECOM_FOOD", 0, False)))
-    if users == []:
-        exit(0)
-    if pwds == []:
-        print_now("电信服务密码未提供 只执行部分任务")
-        for i in range(len(users)):
-            if datetime.now().hour + (8 - int(strftime("%z")[2])) == 12:
-                telecom = ChinaTelecom(users[i], "", False)
-                telecom.init()
-                telecom.convert_reward()
-            else:
-                telecom = ChinaTelecom(users[i], "")
-                telecom.main()
-        exit(0)
-
+    TELECOM = get_environ("TELECOM")
+    users = TELECOM.split("&")
     for i in range(len(users)):
+        user = users[i].split("@")
+        phone = user[0]
+        password = user[1]
+        foods = int(float(user[2]))
+        print(phone,password,foods)
+        if phone == "":
+            exit(0)
+        if password == "":
+            print_now("电信服务密码未提供 只执行部分任务")
+        
         if datetime.now().hour + (8 - int(strftime("%z")[2])) == 12:
-            telecom = ChinaTelecom(users[i], pwds[i], False)
+            telecom = ChinaTelecom(phone, password, False)
             telecom.init()
             telecom.convert_reward()
         else:
-            telecom = ChinaTelecom(users[i], pwds[i])
+            telecom = ChinaTelecom(phone, password)
             telecom.main()
