@@ -14,7 +14,7 @@
     必须  TELECOM : 电信手机号@电信服务密码@宠物喂食次数(默认0,最大10)&手机号2@密码2@喂食数2
     # TELECOM       13311111111@111111@0&13322222222@222222@10
     并发命令：task WWJqingcheng_dx/china_telecom.py conc TELECOM
-             task 后边是脚本所在目录/china_telecom.py这个后面加上后面的两个词就是并发 conc TELECOM
+             task 后边是脚本所在目录/china_telecom.py conc TELECOM
 3. 必须登录过 电信营业厅 app的账号才能正常运行
 """
 """
