@@ -1,15 +1,20 @@
 # qingcheng
+## 务必看一下下面的使用方法，减少提问次数
 
 -有问题qq群问我：665235222  或者点击进群  https://qm.qq.com/cgi-bin/qm/qr?k=Ec4jCxRERNQbhbZp-V6VCcFmyg7swRnE&authKey=zmMD0x2Ag6uzRdy8Fsx7oqFAg9bpDp4KCEU7fRfbjvv3FZi7nXvPmZVaCCKvFncJ&noverify=0&group_code=665235222
 - 随缘维护和上传, 请不要上传或者转载到其它地方。
 - 本仓库脚本仅供用于学习及参考对应web/app的参数解密并提供对应demo用于测试,请不要询问如何多账号等
 - 食用方法都在脚本内,请自行查看。
 - 觉得好用可以点个star。
+
+## 使用方法
+## 使用方法
 ## 使用方法
 
-只讨论电信直播脚本问题，别的问题自行解决哈
 
 缺失tools模块就下载上面的tools文件夹放到/root/ql/scripts/WWJqingcheng_dx这个目录下
+
+缺login就下载上面那个login文件夹同样放到这个目录下/root/ql/scripts/WWJqingcheng_dx
 
 缺失tool模块直接在python依赖里面安装tool
 
@@ -24,7 +29,9 @@
 
 ### . 青龙面板
 - 拉取仓库
+ ql repo https://github.com/WWJqingcheng/dx.git "" "backUp|tools|JS|logs|login"  "tools|JS|logs|login"
  
+ 上面那个拉不到就用下面这个加速代理拉
 ql repo https://github.ruirui.fun/https://github.com/WWJqingcheng/dx.git "" "backUp|tools|JS|logs|login"  "tools|JS|logs|login"
 
 
