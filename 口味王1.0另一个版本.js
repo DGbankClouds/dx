@@ -5,7 +5,7 @@
  软件：口味王小程序
  功能：所有功能
  
- 另一个跑不了就用这个
+ 另一个口味王跑不了就用这个
  两个是否一块用取决于你自己
  
  依赖：依赖需要：@babel/parser  xpath  xmldom  jsdom node-jsencrypt	axios@v0.27.2
@@ -17,7 +17,7 @@
 http://nm6.xyz:20080/ningmeng/ningmeng.git
  */
 
-const $ = new Env('口臭王');
+const $ = new Env('口味王其他版本');
 global.window = {};
 global.navigator = {appName: 'nodejs'};
 const JSEncrypt = require('node-jsencrypt');
