@@ -15,7 +15,7 @@ export redbullcj='' true开启 不填默认关闭
 */
 // corn 0 */3 * * *
 
-const $ = new Env('红牛');
+const $ = new Env('柠檬版红牛');
 const axios = require('axios');
 const CryptoJS = require('crypto-js')
 let request = require("request");
